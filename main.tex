@@ -1,0 +1,178 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+%\usepackage{amsmath}
+\usepackage{appendix}
+\usepackage{tabularx}
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Experience embracing genAI in an engineering computations course: What went wrong and what next}
+\author[lab]{Lorena A. Barba\thanks{Professor of Mechanical and Aerospace Engineering, The George Washinton University, Washington D.C.}}
+\date{March 2025}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+\begin{abstract}
+\noindent This paper is a candid reflection on adopting generative AI in an undergraduate engineering computations course, revealing unforeseen challenges despite best intentions. Students quickly developed patterns of using AI as a shortcut rather than a learning companion, leading to decreased attendance and an ``illusion of competence.'' It discusses the disconnect between instructor expectations and student behavior, how traditional assessment formats reinforced counterproductive AI usage, and ideas for guiding students toward using AI as a copilot rather than a substitute for critical thinking while maintaining academic integrity.
+\end{abstract}
+
+%\printclassoptions
+
+\section{AI and my Engineering Computations course (2024)}\label{sec:engcomp}
+
+My undergraduate course titled Engineering Computations is a beginner course in computational thinking using Python, teaching essential programming for numerical tasks, data practices, and problem-solving with computing in context.\footnote{http://github.com/engineersCode} 
+It serves students in their first and second years at university, and assumes no programming background.\cite{barba2025syll}
+Last year, I explored generative AI as a learning aid with a chatbot trained on my course materials via Retrieval Augmented Generation, RAG, for more grounded responses. It all started quite well. The students began using AI, and were excited about it and the fact that it was not banned like in other courses. The system I used\cite{barba2024pres} gave me access to the history of their chat interactions, and I quickly noticed that students were using AI in a very harmful way. What they were doing was copying assignment questions directly into the AI tool, and with a one-shot prompt, they expected to get \emph{the answer}, to then copy \emph{the answer} into their assignment Jupyter notebook. 
+
+For some years, I have used an autograding system that gave students instant feedback on their assignments, with the ability to resubmit. The purpose was to encourage students to keep working towards mastery. These students, however, began using the autograder and generative AI iteratively to `solve' the exercises in a trial-and-error fashion, avoiding the mental effort that is supposed to take place while working on the assignments. I became very concerned about their use of AI in this way. I talked to them in class about proper uses, and asked them not to copy and paste assignment questions. They did not heed my advice and seemed unaware that they were harming their learning. As the situation did not improve, despite my repeated admonitions, I began to consider whether I needed to implement a more constrained exam setting. A professor in the Computer Science department told me they had pivoted in this direction after a disastrous previous semester due to widespread student misuse of AI in an introductory Python course. I told the class that I was looking into a secure exam setting so they would take the course more seriously. They completely freaked out at this suggestion, because they were counting on the facility of using AI and the autograder to complete their tasks by trial-and-error. It was an impasse.
+
+\section{What I was hoping to achieve by adopting the course AI chatbot}
+
+First of all, students are using AI anyway. I had good reasons to assume they would use a consumer product on their own regardless. If I provided our own AI tool that was grounded on the course materials via retrieval augmented generation, then at least I could expect the output to the student prompts to be correct or more correct than they might be from just the pre-training data of a consumer AI product. Second, I myself have experienced that AI tools have made me more productive using coding to solve problems in my little personal projects. I thus imagined that the students would also be empowered and more productive with AI as a companion. In retrospect,  they needed much more guidance on how to use AI in a way that is conducive to learning---I thought with some live demos and plenty of spoken advice they would get it. It didn’t work.
+
+I was cognizant of the fact that we need to inject learning science into AI tools to be used in education, and that negative learning effects are seen with consumer products without guardrails.\cite{bastani2024generative}\marginnote{Bastani et al.\ report on a randomized control trial of high-school students in a mathematics course: one group had access to ChatGPT and the other had a chat interface that was built with good prompt engineering and safeguards to encourage learning.} But using good prompt engineering we can induce more pedagogical responses from AI, for better learning outcomes compared to the naive use of generalist tools. When crafting a system prompt for my course AI Mentor (see Appendix), I considered these issues carefully and designed it to encourage thinking rather than just provide answers. It’s a fine balance, however, because if the system prompt restrains the chatbot too much, students will simply not use it and fall back to consumer AI products.
+
+We face a big challenge in how to guide students to use AI for assistance rather than a shortcut to avoid cognitive effort. I should have provided more examples or done an orientation session and really taught students how to use AI as a copilot, as a collaborator, rather than a crutch, which is what they did. In the aftermath, I also want to reflect on some other consequences of this experience, for example, the fact that they had AI and were able to take shortcuts to do the coursework meant that they deprioritized my course with respect to other courses where they had closed-book paper exams. So they started not coming to class, attendance dropped dramatically to about 30\%, and students were clearly just not doing much work for my course. I could see that their learning was compromised. We’ve always faced the challenge of accountability so that students will work throughout the semester and not cram at the end and be tempted to take shortcuts. AI has exacerbated this problem dramatically.
+
+\section{Challenges and unintended outcomes}
+
+\subsection{AI can harm learning by the illusion of competence}
+
+Many instructors have now seen how over-reliance in AI harms student learning. I observed also that students experienced what we call the \emph{illusion of competence}.\cite{koriat2005illusions} In discussions of effective pedagogies, often the difference between lecturing and active learning hinges on the illusion of competence. When students hear a very clear lecture, they think they are learning, but in fact, when they go back and try to do the homework, they often cannot do it. The lecture was presented by an expert, and they had this feeling that they understood, but in fact, they didn't. They could not apply that knowledge later. I saw that using AI generated that same effect. Students did not fully realize that they were cheating themselves, because they lack metacognitive skills. They thought they were using AI in the way that was allowed and were progressing in the course. In fact, they were not learning: they experienced the illusion of competence.
+
+\subsection{Defining the Illusion of Competence}
+
+The illusion of competence is a cognitive bias that leads a learner to overestimate their knowledge or skill. It occurs when knowledge sits temporarily in short-term memory, but is not retained in long-term memory. Transfer of knowledge to long-term memory occurs via learning processes that involve forgetting, recall, and repetition---all under conditions of \emph{desirable difficulty}. Many techniques that students use, such as re-reading and highlighting, are in fact not effective because they do not involve that necessary cognitive effort. Yet, students have the \emph{feeling} that they are learning, and they overestimate their knowledge. It leads them to stop studying prematurely, as they believe they have achieved sufficient mastery. They become overconfident and expect high performance in testing, and then experience great frustration when they underperform.
+It is well known that passive learning (lectures, reading and highlighting) creates this false sense of mastery. Especially with a well-delivered lecture, the student has a momentary sense of understanding but literally minutes later cannot recall the material. Effective students use techniques like self-testing and spaced repetition to solidify retention. Only active engagement can promote the deep processing required for long-term learning. Active learning strategies require students to apply concepts, solve problems, and participate in discussions, helping to uncover gaps in understanding and promoting deeper learning.
+
+\subsection{AI use contributed to this illusion}
+
+The naive use of AI tools to complete coursework has a similar effect to a well-delivered lecture. AI provides quick answers that can create a sense of mastery without true understanding. Both passive listening in lectures and relying on AI-generated answers lead to a superficial and fleeting grasp of concepts, as students don't actively engage with the material. They may feel competent after using AI, but this feeling can mask a lack of comprehension, leading to gaps in their learning.
+
+A student sees that an assignment achieved a high score and misinterprets that signal to mean that they have learned something, while they have experienced no (desirable) difficulty. The traditional educational culture of grades has conditioned students to focus on finding homework “solutions”—the product—and not on the effortful “solving”—the process. Thus, one-shot-prompting an AI tool to get high marks in the assignment achieves their goal. Students feel confident without truly learning, and would be lost without the AI crutch.
+
+\newthought{Challenge:} creating a structure where students can use AI, but with regular assessments or group discussions to ensure they're engaging with the material—incorporate in-class low-stakes assessments, quizzes, or graded exercises that they can complete in the class meeting, allowing collaboration with their classmates and allowing use of AI, but with limited time so that they might see the benefits of coming prepared to class.
+
+\newthought{Challenge:} finding the balance between using AI as a helpful tool and encouraging genuine long-term learning.
+
+\subsection{In the students’ mind, it was all my fault}
+
+When I contemplated adjusting the course exam to compel a more effortful engagement with the material, students rebelled. They perceived my pushback as thoroughly unfair. After all, I not only \emph{allowed}, but \emph{encouraged} them to use AI to support their learning. How could I possibly \emph{blame} them for doing what I said they could do? It caused great frustration, and the class dynamics frankly collapsed.
+
+In the end, I did not use secured exam conditions, even if colleagues in computer science had already implemented them and offered access to their resources. Doing so was impeded by both the time crunch to ensure that computers in the exam room were properly configured for my course, and my own feeling that this approach is harsh and unpleasant for all. But I did change the settings for the auto-grader to allow only \emph{one} attempt in the exam (previously I allowed five attempts). This was enough of a change for students to resent me personally with quite some fervor. The exam results were also dreadful, despite the fact that students had access to AI and the full open internet, their notes and my course materials while completing it. What they could not do was trial-and-error via one-shot prompts. I spent two solid weeks poring over the submitted student work, and found signs of copy-pasted answers from AI all over the place---one needed to look no further than the copious code comments to realize it, including comments like ``replace your initial conditions here.''
+
+\subsection{The worst student evaluations of my entire career }
+
+For many years, I have taken pride in being a dedicated and \emph{good} teacher. I have thoughtfully studied the literature on how people learn, adopted teaching innovations, and have been a pioneer and early adopter of technology and methods like the flipped classroom. Students rewarded my efforts with high scores in the course surveys and many glowing comments. This time, however, I received the most horrible surveys of my entire career, with an ``overall instructor score'' of just \emph{2.3 out of 5}. Even during the height of the COVID-19 pandemic, when we all scrambled to deliver continuity of teaching under no-win conditions, my student ratings were 4.8 and 4.5 for the same two-course sequence. Everything in these courses was the same as in 2024: content, class format, assessments, and instructor. Except for one thing: the availability of AI and my embrace of it. (I was on sabbatical and did not teach during 2023, as generative AI use was spreading.) The free-form comments in the student surveys included several that were quite insulting, and some that were factually incorrect. For example, one student commented: ``Instructor changed her mind on the entire syllabus about 3 weeks before the school year ended…'' In fact, the only thing I ``changed'' was removing the multiple attempts with the auto-grader in the second exam. The syllabus was silent on the number of attempts they would be granted, or even that they would have access to the auto-grader for the exam. The course was true to the syllabus, including the weekly schedule and detailed content plan. But \emph{perception is everything}. As I struggled to salvage the course, the rift between myself and the students who were even coming to class only got worse. The mood was one of discontent and distrust. 
+
+It is hard to admit it, but the semester was a failure. No one likes to talk about failures: we live in a success-obsessed culture. Yet \emph{without failure there is no innovation}.
+
+\begin{table}[ht]
+  \centering
+  \fontfamily{ppl}\selectfont
+  \begin{tabularx}{\linewidth}{X}
+    \toprule
+    Some student comments: \\
+    \midrule
+    ``AI has ruined this course. It makes the assignments extremely easy and its availability makes her class easily ignorable by students.'' \\
+    ``Banning AI use would drastically make this course more useful and fair.'' \\
+    ``...a majority of people would fail to be competent in the subject if AI were taken away; I would be.''\\
+    \bottomrule
+  \end{tabularx}
+  \label{tab:studentcomm}
+\end{table}
+
+\section{Lessons learned and path forward}
+
+\subsection{Unproductive moods}
+
+One of my regrets is being unable to fend off the unproductive moods that took hold after my unprepared responses to AI misuse. My expectations were too high when I gave students free rein to use a powerful cognitive assist while completing graded work \emph{unsupervised}. They are beginners, and most have not developed into self-regulated learners. It should have been predictable that they would use AI inappropriately, decide the course was easy, and attendance would drop---but somehow I was blindsided. I became frustrated, and they confused; impatience, anxiety, overwhelm: all these moods creeped in and became additional blockers to learning.\cite{denning2016learning}\marginnote{A "mood" as it relates to learning can be defined as a predisposition that influences our actions or inaction. It leads to automatic assessments about how things are going in a particular situation. See also the book \emph{``Learning to Learn and the Navigation of Moods''} by Gloria P. Flores (2016).}
+
+\subsection{Assessment validity}
+
+The conversation about AI and education has been dominated by two threads: 1) the overhyped claims about the transformative potential of AI, and 2) the hand wringing about AI and cheating. A reframing of the issue of cheating by inappropriate use of AI is needed to focus on the properties of the assessment, rather than the behavior of the students.\cite{dawson2024validity} This is the \emph{validity} lens: if an assessment depends on students not (mis)using AI but we cannot prevent them from doing so, then the assessment is invalid. My colleagues in computer science have opted for banishing AI from exams by deploying a battery of closed-down computers with access to only whitelisted websites. The assessments are now valid measures of learning, but these conditions do not prepare students for a world where AI is ubiquitous.
+
+\subsection{AI is too ubiquitous to be avoided}
+
+Generative AI tools have now popped up everywhere, to the point that it’s very hard to avoid AI. As I write this, I have an inviting pencil icon on the side with a “help me write” message. A chat sidebar and predictive code suggestions are now available in Google Colab\footnote{http://colab.research.google.com} notebooks, and Anaconda Cloud\footnote{http://anaconda.cloud} notebooks. Our university’s Microsoft contract has added Copilot, and students can access GitHub Copilot via the free student pack. As students become more advanced, they discover AI-powered integrated development environments (IDEs) and agents like Cursor, Windsurf, v$0$, Replit and others. It’s reasonable to question whether it serves students well to allow them to graduate \emph{without} having experience with these tools, as they will likely encounter them at work.
+
+\subsection{Developing true competence without banning AI}
+
+The antidotes for the illusion of competence were and continue to be active learning and reflective practices. If we give students unsupervised “homework” assignments, they \emph{will} use AI to complete them, regardless of what we tell them to do. That is a fact. The challenge is restructuring the classroom activities to promote engagement and the assessments to retain validity. It is a \emph{design} problem.
+
+I spent my winter break thinking and stressing about what to do, immediately and with no more than a few days of prep, to re-design the course activities and assessments for the next semester. Banning AI was not going to work, so what I decided was to instead ban homework and exams! In my current iteration of the course, we have quizzes and graded exercises in every class. I teach in a studio-style room with hexagonal high tables, and allow the  students to collaborate with their table mates while completing graded work. They are still using AI, but in front of their peers, while the TA, two undergraduate learning assistants and myself are walking the floor and both asking and answering questions. The exercises are timed, so that we have class time remaining for some review of key concepts, and brief live-coding presentations before and/or after. This also emphasizes the value of coming to class prepared. To help this format, I dug out my archive of videos from online teaching during the pandemic remote teaching, and have been editing them (to remove student names and likeness, and dead times), uploading them to YouTube, and assigning them for viewing out of class—the classic flipped classroom format. I’ve also had to refactor all my previous written assessments into these smaller chunks, aiming for achievable sets in under 30 minutes. It certainly is a large amount of new work, but attendance is steady at about 94\% on average and I can see and hear students comparing answers, explaining to each other, and showing engagement. \emph{They are learning.}
+
+Improvements are certainly still at hand, as I’m redesigning under time-restricted conditions. These are some ideas to think about for adding learning activities that can be effective without banning AI:
+
+\begin{enumerate}
+    \item Guided Exploration: Encourage students to use AI for exploring different approaches to a problem, rather than just looking for answers, and use AI to \emph{explain} code, rather than \emph{generate} code.
+    \item Reflection Prompts: After using AI, have students reflect on what they learned, what they still need to understand, and how AI helped or hindered their process.
+    \item Critical Evaluation: Teach students to critically evaluate AI-generated responses, compare them with their own understanding, and identify any gaps or errors. Show them how to test code and confirm its correctness.
+    \item Collaboration: Use AI as a collaborative tool where students can work together to discuss AI outputs and collectively improve their understanding.
+\end{enumerate}
+
+These strategies can help students use AI as a means to deepen their engagement with the material and develop genuine competence. However, we will need to remain vigilant and iterate, with students’ participation, to ``find the line.''
+
+\subsection{Drawing boundaries of acceptable AI use}
+
+One of the challenges for students is that every faculty member can have a different policy about using AI in their course. In parallel, instructors face the challenge that universities are offering vague (or no) guidance about what should be acceptable AI uses. Some instructors also underestimate the capabilities of generative AI to complete the tasks they assign students, or lack experience with it enough to imagine how to rethink assessments. They may simply lack the time. It’s a major challenge, but we need to work together to define what separates ``good'' from ``bad'' uses of AI in a learning context. In other words, generative AI is not only a new technology to learn and adopt in teaching and learning. It also demands \emph{boundary work}: creating, negotiating, and committing to what is legitimate within a given context. This is hard work. Both educators and students have reported anxiety and an emotional toll navigating the disruption of traditional academic boundaries caused by AI.\cite{corbin2025s} Let’s start by acknowledging that the work required is not simply to ``redesign assessments,'' and let’s open the spaces to negotiate the new social norms to guide us.
+
+\section{Conclusion}
+
+Educational innovation is seldom rewarded. More often than not, the (flawed) instrument our institutions use for evaluating teaching (student course survey) penalizes innovations. (If you were an early adopter of the flipped classroom, you are familiar with students complaining that they have to ``teach themselves.'') Innovation is also messy. New teaching approaches require sometimes painful debugging, in public. That’s how progress happens.
+
+Right now, we’re witnessing one of the most dramatic technological transformations in history. AI isn't just another educational technology; it's a fundamental shift in how knowledge work happens. It's rewriting the rules of engagement for every discipline, including how we teach those disciplines.
+
+Meanwhile, educational institutions continue moving at a glacial pace. It can take a year to get a new course approved, and several years to change a curriculum. The gap between technological change and our educational response is widening every week, with nonstop launches of new models and products. Innovation is not optional: it’s existential. We risk becoming utterly irrelevant if we do not adapt, and students already sense this. They know that the traditional skills we're teaching don't fully align with the AI-augmented world they'll work in. Students leapt at the chance to use AI in my course because they recognized its real-world value, even as they misunderstood how to use it for learning.
+
+As educators, we’ll have to muster the courage to experiment, document results honestly, and contribute to our collective understanding, even when that means sharing our failures. We need departmental cultures and institutional policies that don't punish experimentation but instead create safe spaces for educational innovation.
+My experience was humbling. It was frustrating. But it was necessary. Through these experiments, messy and imperfect though they are, we'll develop approaches that embrace AI as a partner in learning while maintaining our core mission: developing genuinely competent graduates who can think critically and solve problems in an increasingly complex world. The alternative---clinging to pre-AI educational models while pretending these tools don't exist--is more than impractical. It's nonviable.
+
+
+\bibliography{references}
+\bibliographystyle{plainnat}
+
+\newthought{Lorena A. Barba} is a professor of mechanical and aerospace engineering at the George Washington University and holds a PhD in Aeronautics from California Institute of Technology. She is a member of the IEEE Computer Society and past EiC of Computing in Science and Engineering. Contact her at labarba@gwu.edu.
+
+\clearpage
+\appendix
+\begin{fullwidth}
+\section{Appendix}
+\subsection{System prompt used in the AI Mentor}
+You are a helpful instructor, ready to answer the student's questions about Engineering Computations, a course in technical computing with Python. The course instructor is Prof. Lorena Barba at the George Washington University, and you are her faithful assistant and alter ego. Answer quickly and concisely. Offer to go in depth or explain with an example where necessary. I will tip you \$200 if the student is happy with the interaction and more motivated to learn after chatting with you. Help students understand by providing explanations, examples, and analogies as needed. Given the data you will receive from the vector-store-extracted parts of a long document and a question, create a final answer. You should also use content from the public documentation of the scientific Python ecosystem, as needed. Do not tell the user how you are going to answer the question. If and ONLY if the current message from the user is a greeting, greet back and ask them how you may help them with Engineering Computations or Python. DO NOT keep greeting or repeating messages to the user. If there is no data from the document or it is blank, or there's no chat history, do not tell the user that the document is blank and also do not tell them that they have not asked any questions: just answer normally with your own knowledge. If they ask something unrelated to the course, try to bring them back to task and tell the student you are here to help with Prof. Barba's course on Engineering Computations with Python. You can ask them: where are you in the course? What did you find confusing today? or, what did you find interesting in the course so far? Rephrase these questions as needed to bring the student back on topic. If your response contains any Python code, be consistent with the coding style in the content provided—in particular, use long imports like this: `import numpy`, instead of `import numpy as np`. Offer to explain code snippets line by line.  It's important to strike a balance between providing assistance and nurturing independent problem-solving skills in students. Consider this guidance in crafting your answers: - Scaffolded assistance: provide hints, guiding questions, analogies and help a student build the answer in stages - Meta-cognitive prompts: encourage students to think about their thinking - Delayed feedback: give students time to think, and limit direct answers Adapt this guidance to answer the questions in a way that is conducive to learning. This is important. IMPORTANT: You must ONLY reply to the current message from the user.
+\end{fullwidth}
+\end{document}
